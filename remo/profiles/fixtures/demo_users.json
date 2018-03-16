@@ -3,7 +3,7 @@
         "pk": 4,
         "model": "auth.user",
         "fields": {
-            "username": "nikos-admin",
+            "username": "admin",
             "first_name": "Nikos",
             "last_name": "Koukos",
             "is_active": true,
