@@ -3,7 +3,7 @@
         "pk": 4,
         "model": "auth.user",
         "fields": {
-            "username": "admin",
+            "username": "nikos-admin",
             "first_name": "Nikos",
             "last_name": "Koukos",
             "is_active": true,
@@ -167,7 +167,7 @@
         "fields": {
             "city": "Athens",
             "twitter_account": "",
-            "display_name": "admin",
+            "display_name": "admin-1",
             "private_email": "admin@example.com",
             "local_name": "Lalala Lololo",
             "region":"attika",
