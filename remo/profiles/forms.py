@@ -17,6 +17,7 @@ from remo.base.templatetags.helpers import user_is_rep
 from remo.base.utils import get_date
 from remo.profiles.models import (FunctionalArea, MobilisingInterest, MobilisingSkill,
                                   UserProfile, UserStatus)
+from .tasks import generate_nomination_activity_for_mentor
 
 
 USERNAME_ALGO = getattr(settings, 'OIDC_USERNAME_ALGO', default_username_algo)
@@ -309,4 +310,7 @@ class RotmNomineeForm(happyforms.Form):
                 self.cleaned_data['is_rotm_nominee']):
             self.instance.is_rotm_nominee = True
             self.instance.rotm_nominated_by = nominated_by
+            generate_nomination_activity_for_mentor.apply_async(
+                kwargs={'mentor': nominated_by}
+            )
             self.instance.save()

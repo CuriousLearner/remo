@@ -15,6 +15,8 @@ from remo.base.tasks import send_remo_mail
 from remo.base.utils import get_date, number2month
 from remo.celery import app
 from remo.dashboard.models import ActionItem
+from remo.reports.models import Activity, NGReport
+from remo.reports import ACTIVITY_ROTM_NOMINATED
 from remo.profiles.models import (UserProfile, UserStatus,
                                   NOMINATION_ACTION_ITEM)
 
@@ -154,3 +156,24 @@ def resolve_nomination_action_items():
                                            name=name)
                                    .exclude(completed=True))
         items.update(resolved=True)
+
+
+@app.task
+def generate_nomination_activity_for_mentor(mentor):
+    """Generate the activity for Mentor stating s/he nominated a Rep for ROTM
+    Reps of the Month
+    """
+
+    activity = Activity.objects.get(name=ACTIVITY_ROTM_NOMINATED)
+
+    attrs = {
+        'activity': activity,
+        'report_date': get_date(),
+        'longitude': mentor.lon,
+        'latitude': mentor.lat,
+        'location': '%s, %s, %s' % (mentor.city, mentor.region, mentor.country),
+        'link': None,
+        'is_passive': False,
+        'user': mentor
+    }
+    NGReport.objects.create(**attrs)
